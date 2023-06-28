@@ -21,7 +21,7 @@ const Navbar = () => {
         <div className="dropdown">
           {!currentUser?.emailVerified ? (
             <>
-              <label tabIndex={0} className="btn btn-ghost lg:hidden">
+              <label tabIndex={0} className="btn btn-white lg:hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -40,7 +40,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <label htmlFor="my-drawer-2" className="btn btn-ghost lg:hidden">
+              <label htmlFor="my-drawer-2" className="btn btn-white lg:hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"

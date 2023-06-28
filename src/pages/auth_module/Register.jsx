@@ -55,99 +55,55 @@ function Register() {
   };
 
   // Register user
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
     setError("");
-    if (validatePassword()) {
-      // Create a new user with email and password using firebase
 
-      if (userType.length > 0) {
-        if (userType === "admin") {
-          setLoading(true);
-          createUserWithEmailAndPassword(auth, email, password)
-            .then(async () => {
-              const userRef = collection(db, "admin");
-              const adminRef = doc(userRef, auth.currentUser.uid);
-              await setDoc(
-                adminRef,
-                {
-                  user_type: userType,
-                  email: email,
-                  first_name: fName,
-                  second_name: sName,
-                  phone_number: phone,
-                  my_cash: 0,
-                },
-                { merge: true }
-              ).then(() => {
-                sendEmailVerification(auth.currentUser)
-                  .then(() => {
-                    setTimeActive(true);
-                    setLoading(false);
-                    navigate("/verify-email");
-                  })
-                  .catch((err) => {
-                    setLoading(false);
-                    setError(err.message);
-                  });
-              });
-            })
-            .catch((err) => {
-              setLoading(false);
-              setEmail("");
-              setPassword("");
-              setConfirmPassword("");
-              setUserType("");
-              setError(err.message);
-            });
-        } else {
-          setLoading(true);
-          createUserWithEmailAndPassword(auth, email, password)
-            .then(async () => {
-              // Creating new user
-              const userRef = collection(db, "back_office");
-              const writerRef = doc(userRef, auth.currentUser.uid);
-              await setDoc(
-                writerRef,
-                {
-                  user_type: userType,
-                  email: email,
-                  first_name: fName,
-                  second_name: sName,
-                  phone_number: phone,
-                },
-                { merge: true }
-              ).then(() => {
-                sendEmailVerification(auth.currentUser)
-                  .then(() => {
-                    setTimeActive(true);
-                    setLoading(false);
-                    navigate("/verify-email");
-                  })
-                  .catch((err) => {
-                    setLoading(false);
-                    setError(err.message);
-                  });
-              });
-            })
-            .catch((err) => {
-              setLoading(false);
-              setFName("");
-              setSName("");
-              setPhone("");
-              setEmail("");
-              setPassword("");
-              setConfirmPassword("");
-              setUserType("");
-              setError(err.message);
-            });
-        }
-      }
-    } else {
+    if (!validatePassword()) {
       setLoading(false);
-      setError("Error adding document! ");
+      setError("Error adding document!");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const userRef = collection(db, userType); // Collection based on userType
+
+      await setDoc(
+        doc(userRef, user.uid),
+        {
+          user_type: userType,
+          email: email,
+          first_name: fName,
+          second_name: sName,
+          phone_number: phone,
+        },
+        { merge: true }
+      );
+
+      await sendEmailVerification(user);
+      setTimeActive(true);
+      setLoading(false);
+      navigate("/verify-email");
+    } catch (err) {
+      setLoading(false);
+      setFName("");
+      setSName("");
+      setPhone("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setUserType("");
+      setError(err.message);
     }
   };
+
   return (
     <div className="container mx-auto ">
       <div className="min-h-full max-w-7xl flex items-center justify-center py-12 lg:px-8">
@@ -298,7 +254,6 @@ function Register() {
                       </div>
                     </div>
                   </div>
-                  
 
                   <div className=" md shadow-sm">
                     <div className="mb-9">
@@ -392,9 +347,13 @@ function Register() {
                           <option defaultValue value={""} disabled>
                             Select user type
                           </option>
-                          <option value={"admin"}>Admin</option> 
-                          <option value={"content_manager"}>Content Management</option>
-                          <option value={"event_manager"}>Event Management</option>
+                          <option value={"admin"}>Admin</option>
+                          <option value={"content_manager"}>
+                            Content Management
+                          </option>
+                          <option value={"event_manager"}>
+                            Event Management
+                          </option>
                           <option value={"back_office"}>Back Office</option>
                         </select>
                       </div>

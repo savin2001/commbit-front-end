@@ -27,6 +27,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [visibility, setVisibility] = useState(false);
+  const [visibility1, setVisibility1] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -40,6 +41,37 @@ function Register() {
   // Password hidden
   const hidePassword = () => {
     setVisibility(false);
+  };
+
+  // Password visible
+  const checkConfirmedPassword = () => {
+    setVisibility1(true);
+  };
+
+  // Password hidden
+  const hideConfirmedPassword = () => {
+    setVisibility1(false);
+  };
+
+  // Confirm is password is strong
+  const getPasswordStrength = (password) => {
+    const passwordLength = password.length;
+    const hasLowercase = /[a-z]/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+
+    if (passwordLength === 0) {
+      return ""; // No password provided
+    } else if (
+      passwordLength < 6 ||
+      !(hasLowercase && hasUppercase && hasNumbers)
+    ) {
+      return "weak"; // Password is either less than 6 characters or missing a required character type
+    } else if (passwordLength < 10) {
+      return "medium"; // Password is between 6 and 9 characters and includes all required character types
+    } else {
+      return "strong"; // Password is 10 characters or more and includes all required character types
+    }
   };
 
   // Confirm if passwords match
@@ -170,8 +202,15 @@ function Register() {
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                           placeholder="First name"
-                          className="input input-bordered input-neutral w-full   focus:input-primary capitalize"
-                          onChange={(e) => setFName(e.target.value)}
+                          className="input input-bordered input-neutral w-full focus:input-primary capitalize"
+                          onChange={(e) => {
+                            const input = e.target.value;
+                            const sanitizedInput = input.replace(
+                              /[^a-zA-Z\s]/g,
+                              ""
+                            );
+                            setFName(sanitizedInput);
+                          }}
                         />
                       </div>
                     </div>
@@ -195,8 +234,15 @@ function Register() {
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                           placeholder="Second name"
-                          className="input input-bordered input-neutral w-full   focus:input-primary capitalize"
-                          onChange={(e) => setSName(e.target.value)}
+                          className="input input-bordered input-neutral w-full focus:input-primary capitalize"
+                          onChange={(e) => {
+                            const input = e.target.value;
+                            const sanitizedInput = input.replace(
+                              /[^a-zA-Z\s]/g,
+                              ""
+                            );
+                            setSName(sanitizedInput);
+                          }}
                         />
                       </div>
                     </div>
@@ -222,8 +268,15 @@ function Register() {
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                           placeholder="Phone number"
-                          className="input input-bordered input-neutral w-full   focus:input-primary"
-                          onChange={(e) => setPhone(e.target.value)}
+                          className="input input-bordered input-neutral w-full focus:input-primary"
+                          onChange={(e) => {
+                            const input = e.target.value;
+                            const sanitizedInput = input.replace(
+                              /[^0-9+\-()\s]/g,
+                              ""
+                            );
+                            setPhone(sanitizedInput);
+                          }}
                         />
                       </div>
                     </div>
@@ -244,12 +297,16 @@ function Register() {
                           autoComplete="email"
                           required
                           onInvalid={(e) =>
-                            e.target.setCustomValidity("Enter valid email")
+                            e.target.setCustomValidity("Enter a valid email")
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                           placeholder="Email address"
-                          className="input input-bordered input-neutral w-full   focus:input-primary"
-                          onChange={(e) => setEmail(e.target.value)}
+                          className="input input-bordered input-neutral w-full focus:input-primary"
+                          onChange={(e) => {
+                            const input = e.target.value;
+                            const sanitizedInput = input.trim();
+                            setEmail(sanitizedInput);
+                          }}
                         />
                       </div>
                     </div>
@@ -267,14 +324,28 @@ function Register() {
                           type={!visibility ? "password" : "text"}
                           value={password}
                           required
-                          onInvalid={(e) =>
-                            e.target.setCustomValidity("Enter your password")
-                          }
+                          onInvalid={(e) => {
+                            e.target.setCustomValidity(
+                              "Enter a stronger password"
+                            );
+                            setPassword("");
+                          }}
                           onInput={(e) => e.target.setCustomValidity("")}
-                          className="input input-bordered input-neutral w-full   focus:input-primary"
+                          className={`input input-bordered input-neutral w-full ${
+                            password && getPasswordStrength(password) === "weak"
+                              ? "focus:input-error border-red-500 text-red-500"
+                              : password &&
+                                getPasswordStrength(password) === "medium"
+                              ? "focus:input-primary border-primary text-primary"
+                              : password &&
+                                getPasswordStrength(password) === "strong"
+                              ? "focus:input-green-500 border-green-500 text-green-500"
+                              : ""
+                          }`}
                           placeholder="Enter your password"
                           onChange={(e) => setPassword(e.target.value)}
                         />
+
                         <label className="swap swap-rotate cursor-pointer w-8 h-8 absolute top-1/2 transform -translate-y-1/2 right-3 z-50">
                           <input type="checkbox" aria-label="check password" />
                           <div className="swap-on">
@@ -302,14 +373,30 @@ function Register() {
                         <input
                           id="confirm-password"
                           name="password"
-                          type={!visibility ? "password" : "text"}
+                          type={!visibility1 ? "password" : "text"}
                           value={confirmPassword}
                           required
-                          onInvalid={(e) =>
-                            e.target.setCustomValidity("Confirm your password")
-                          }
+                          onInvalid={(e) => {
+                            e.target.setCustomValidity(
+                              "Enter a stronger password"
+                            );
+                            setConfirmPassword("");
+                          }}
                           onInput={(e) => e.target.setCustomValidity("")}
-                          className="input input-bordered input-neutral w-full   focus:input-primary"
+                          className={`input input-bordered input-neutral w-full ${
+                            password &&
+                            getPasswordStrength(confirmPassword) === "weak"
+                              ? "focus:input-error border-red-500 text-red-500"
+                              : password &&
+                                getPasswordStrength(confirmPassword) ===
+                                  "medium"
+                              ? "focus:input-primary border-primary text-primary"
+                              : password &&
+                                getPasswordStrength(confirmPassword) ===
+                                  "strong"
+                              ? "focus:input-green-500 border-green-500 text-green-500"
+                              : ""
+                          }`}
                           placeholder="Confirm password"
                           onChange={(e) => setConfirmPassword(e.target.value)}
                         />
@@ -318,13 +405,13 @@ function Register() {
                           <div className="swap-on">
                             <AiFillEyeInvisible
                               className="w-5 h-5 text-neutral hover:text-primary"
-                              onClick={checkPassword}
+                              onClick={checkConfirmedPassword}
                             />
                           </div>
                           <div className="swap-off">
                             <AiOutlineEye
                               className="w-5 h-5 text-neutral hover:text-primary"
-                              onClick={hidePassword}
+                              onClick={hideConfirmedPassword}
                             />
                           </div>
                         </label>

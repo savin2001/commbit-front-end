@@ -22,7 +22,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [visibility, setVisibility] = useState(false);
-  const [userType, setUserType] = useState(["admin", "writer"]);
+  const userType = ["admin", "content_manager", "event_manager", "back_office"];
   const [error, setError] = useState("");
   const { setTimeActive } = useAuthValue();
   const navigate = useNavigate();
@@ -43,25 +43,19 @@ function Login() {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(async () => {
-        // Check if the user is admin
-        const adminRef = doc(db, "admin", auth.currentUser.uid);
-        const adminSnap = await getDoc(adminRef);
-        if (adminSnap.exists()) {
-          const user = adminSnap.data();
-          if (user.user_type === userType[0]) {
-            localStorage.setItem("upd", JSON.stringify(user));
-            navigate(`/${auth.currentUser.uid}/dashboard`);
-          }
+        const userRefPromises = userType.map((type) =>
+          getDoc(doc(db, type, auth.currentUser.uid))
+        );
+        const userSnapshots = await Promise.all(userRefPromises);
+        const userSnapshot = userSnapshots.find((snapshot) => snapshot.exists());
+        
+        if (userSnapshot) {
+          const user = userSnapshot.data();
+          localStorage.setItem("upd", JSON.stringify(user));
+          const dashboardPath = `/${user.user_type}/dashboard`;
+          navigate(dashboardPath);
         } else {
-          const writerRef = doc(db, "users", auth.currentUser.uid);
-          const writerSnap = await getDoc(writerRef);
-          if (writerSnap.exists()) {
-            const user = writerSnap.data();
-            if (user.user_type === userType[1]) {
-              localStorage.setItem("upd", JSON.stringify(user));
-              navigate(`/${auth.currentUser.uid}/dashboard`);
-            }
-          }
+          throw new Error("User not found or invalid user type");
         }
       })
       .then(() => {
@@ -78,7 +72,7 @@ function Login() {
               setError(err.message);
             });
         } else {
-          console.log("User verified")
+          console.log("User verified");
         }
       })
       .catch((err) => {
@@ -93,6 +87,9 @@ function Login() {
         }
       });
   };
+  
+  
+  
   return (
     <div className="container mx-auto">
       <div className="min-h-full max-w-7xl flex items-center justify-center py-12 lg:px-8">
@@ -151,12 +148,16 @@ function Login() {
                           autoComplete="email"
                           required
                           onInvalid={(e) =>
-                            e.target.setCustomValidity("Enter valid email")
+                            e.target.setCustomValidity("Enter a valid email")
                           }
                           onInput={(e) => e.target.setCustomValidity("")}
                           placeholder="Email address"
-                          className="input input-bordered input-neutral w-full   focus:input-primary"
-                          onChange={(e) => setEmail(e.target.value)}
+                          className="input input-bordered input-neutral w-full focus:input-primary"
+                          onChange={(e) => {
+                            const input = e.target.value;
+                            const sanitizedInput = input.trim();
+                            setEmail(sanitizedInput);
+                          }}
                         />
                       </div>
                     </div>

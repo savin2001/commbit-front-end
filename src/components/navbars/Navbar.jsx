@@ -78,7 +78,7 @@ const Navbar = () => {
         ) : (
           <>
             <span
-              className="btn btn-sm btn-error font-bold text-base lg:text-lg"
+              className="btn btn-sm btn-error text-base-100 font-bold text-base"
               onClick={() => {
                 localStorage.removeItem("upd");
                 signOut(auth);

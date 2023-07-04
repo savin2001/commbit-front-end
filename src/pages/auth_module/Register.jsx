@@ -100,13 +100,9 @@ function Register() {
     setLoading(true);
 
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userRef = collection(db, userType); // Collection based on userType
-
+      const { user } = await createUserWithEmailAndPassword(auth, email, password); // Create a new user account with email and password
+      const userRef = collection(db, userType); // Get the collection reference based on userType
+    
       await setDoc(
         doc(userRef, user.uid),
         {
@@ -116,15 +112,15 @@ function Register() {
           second_name: sName,
           phone_number: phone,
         },
-        { merge: true }
+        { merge: true } // Update the user document with the new data, merging existing data
       );
-
-      await sendEmailVerification(user);
-      setTimeActive(true);
-      setLoading(false);
-      navigate("/verify-email");
+    
+      await sendEmailVerification(user); // Send email verification to the user
+      setTimeActive(true); // Set timeActive state to true
+      setLoading(false); // Set loading state to false
+      navigate("/verify-email"); // Navigate to the "verify-email" page
     } catch (err) {
-      setLoading(false);
+      setLoading(false); // Set loading state to false
       setFName("");
       setSName("");
       setPhone("");
@@ -132,8 +128,9 @@ function Register() {
       setPassword("");
       setConfirmPassword("");
       setUserType("");
-      setError(err.message);
+      setError(err.message); // Set error state with the error message
     }
+    
   };
 
   return (

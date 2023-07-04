@@ -40,62 +40,61 @@ function Login() {
   // Login user
   const login = (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true); // Set loading state to true
     signInWithEmailAndPassword(auth, email, password)
       .then(async () => {
         const userRefPromises = userType.map((type) =>
           getDoc(doc(db, type, auth.currentUser.uid))
         );
         const userSnapshots = await Promise.all(userRefPromises);
-        const userSnapshot = userSnapshots.find((snapshot) =>
-          snapshot.exists()
-        );
-
+        const userSnapshot = userSnapshots.find((snapshot) => snapshot.exists());
+  
         if (userSnapshot) {
           const user = userSnapshot.data();
-          localStorage.setItem("upd", JSON.stringify(user));
+          localStorage.setItem("upd", JSON.stringify(user)); // Store user data in local storage
         } else {
-          throw new Error("User not found or invalid user type");
+          throw new Error("User not found or invalid user type"); // Throw error if user not found or invalid user type
         }
       })
       .then(() => {
         if (!auth.currentUser.emailVerified) {
           sendEmailVerification(auth.currentUser)
             .then(() => {
-              setTimeActive(true);
-              navigate("/verify-email");
+              setTimeActive(true); // Set timeActive state to true
+              navigate("/verify-email"); // Navigate to the "verify-email" page
             })
             .catch((err) => {
-              setLoading(false);
+              setLoading(false); // Set loading state to false
               setEmail("");
               setPassword("");
-              setError(err.message);
+              setError(err.message); // Set error state with the error message
             });
         } else {
           const storedUser = JSON.parse(localStorage.getItem("upd"));
           // console.log(storedUser);
           if (storedUser != null) {
             const dashboardPath = `/${storedUser.user_type}/dashboard`;
-            navigate(dashboardPath);
+            navigate(dashboardPath); // Navigate to the user's dashboard based on user type
           } else {
             // console.log("No user data found");
           }
           // console.log("User verified");
-          navigate("/");
+          navigate("/"); // Navigate to the home page
         }
       })
       .catch((err) => {
-        setLoading(false);
+        setLoading(false); // Set loading state to false
         setEmail("");
         setPassword("");
         console.log(err);
         if (err.message === "Firebase: Error (auth/network-request-failed).") {
-          setError("Network error. Check your internet connection");
+          setError("Network error. Check your internet connection"); // Set error state for network error
         } else {
-          setError(err.message);
+          setError(err.message); // Set error state with the error message
         }
       });
   };
+
 
   return (
     <>

@@ -12,11 +12,20 @@ import PrivateRoute from "./components/private_route/PrivateRoute";
 import DashBoard from "./pages/common_submodule/DashBoard";
 import Loading from "./components/data_fetch_state/Loading";
 import Profile from "./components/profile/Profile";
+import Media from "./pages/content_mngmt_submodule/Media";
+import Users from "./pages/back_office_submodule/Users";
+import Blogs from "./pages/content_mngmt_submodule/Blogs";
+import Events from "./pages/event_mngmt_submodule/Events";
+import Participants from "./pages/event_mngmt_submodule/Participants";
+import Documents from "./pages/back_office_submodule/Documents";
+import Reports from "./pages/back_office_submodule/Reports";
 
 export default function App() {
   // User state
   const [userType, setUserType] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  //const [user, setUser] = useState(null);
+  const [userDet, setUserDet] = useState(null);
   const [timeActive, setTimeActive] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -29,8 +38,9 @@ export default function App() {
         const storedUser = localStorage.getItem("upd");
         if (storedUser) {
           const user_det = JSON.parse(storedUser);
+          //setUser(user_det);
+          setUserDet(user_det)
           setUserType(user_det.user_type);
-          setLoading(false);
         } else {
           // Handle the case when the "upd" item is not found in localStorage
           console.log("No user data found");
@@ -51,7 +61,7 @@ export default function App() {
               {/* If the url is invalid */}
               <Route path="*" element={<PageNotFound />} />
 
-              {/* AUthentication and authorization */}
+              {/* Authentication and authorization */}
               <Route
                 path="/"
                 element={
@@ -95,22 +105,23 @@ export default function App() {
                 }
               />
 
-              {/* Admin pages */}
               <Route
                 exact
                 path={`/:uid/dashboard`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <DashBoard user={userDet} />
                   </PrivateRoute>
                 }
               />
+              
+              {/* Admin pages */}
               <Route
                 exact
                 path={`/:uid/users`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Users user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -118,19 +129,10 @@ export default function App() {
               {/* Content management pages */}
               <Route
                 exact
-                path={`/:uid/dashboard`}
-                element={
-                  <PrivateRoute>
-                    <DashBoard />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                exact
                 path={`/:uid/media`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Media user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -139,7 +141,7 @@ export default function App() {
                 path={`/:uid/blogs`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Blogs user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -147,20 +149,10 @@ export default function App() {
               {/* Event management pages */}
               <Route
                 exact
-                path={`/:uid/dashboard`}
-                element={
-                  <PrivateRoute>
-                    <DashBoard />
-                  </PrivateRoute>
-                }
-              />
-
-              <Route
-                exact
                 path={`/:uid/events`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Events user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -170,7 +162,7 @@ export default function App() {
                 path={`/:uid/participants`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Participants user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -178,20 +170,10 @@ export default function App() {
               {/* Back office pages */}
               <Route
                 exact
-                path={`/:uid/dashboard`}
-                element={
-                  <PrivateRoute>
-                    <DashBoard />
-                  </PrivateRoute>
-                }
-              />
-
-              <Route
-                exact
                 path={`/:uid/documents`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Documents user={userDet} />
                   </PrivateRoute>
                 }
               />
@@ -201,7 +183,7 @@ export default function App() {
                 path={`/:uid/reports`}
                 element={
                   <PrivateRoute>
-                    <DashBoard />
+                    <Reports user={userDet} />
                   </PrivateRoute>
                 }
               />

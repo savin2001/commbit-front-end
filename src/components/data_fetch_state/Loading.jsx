@@ -4,7 +4,7 @@ const Loading = () => {
     <div className="flex h-screen justify-center items-center ">
       <div className="shadow-xl p-10 h-96 max-h-screen max-w-md">
         <img
-          className="mx-auto h-12 w-auto"
+          className="mx-auto h-12 w-auto animate-pulse"
           src="https://api.dicebear.com/6.x/identicon/svg?seed=Ange"
           alt="avatar"
         />

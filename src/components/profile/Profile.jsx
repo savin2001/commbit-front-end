@@ -93,7 +93,7 @@ function Profile() {
       ) : (
         <>
           <Navbar />
-          <div className="w-full bg-secondary">
+          <div className="w-full">
             <div className="mx-auto">
               <div className="drawer drawer-mobile">
                 <input
@@ -104,7 +104,7 @@ function Profile() {
                 <div className="drawer-content flex flex-col items-start justify-start mt-16">
                   <div className="p-4">
                     <div>
-                      <div className="shadow-lg overflow-hidden sm:rounded-lg pb-4 mb-8 bg-base-100">
+                      <div className="shadow-lg overflow-hidden sm:rounded-lg pb-4 mb-8 bg-base-100 ">
                         <div className="px-4 py-5 bg-base-100 space-y-6 sm:p-6">
                           <div className="flex flex-wrap">
                             <h3 className="sm:text-md md:text-lg font-bold leading-6 text-primary mr-5">
@@ -119,7 +119,7 @@ function Profile() {
                           <div className="py-3">
                             <div className="border-t border-secondary" />
                           </div>
-                          <div className="grid grid-cols-6 gap-8">
+                          <div className="grid grid-cols-3 gap-8">
                             <div className="col-span-6 md:col-span-3 relative">
                               <label htmlFor="first_name" className="sr-only">
                                 First name
@@ -203,7 +203,7 @@ function Profile() {
                             className="modal-toggle"
                           />
                           <div className="modal">
-                            <form onSubmit={update} className="modal-box">
+                            <form onSubmit={update} className="modal-box w-full sm:max-w-sm md:max-w-md lg:max-w-lg">
                               <div className="flex flex-wrap mb-5">
                                 <h3 className="sm:text-md md:text-lg font-bold leading-6 text-primary mr-5 capitalize">
                                   Change personal details
@@ -215,8 +215,8 @@ function Profile() {
                               </div>
 
                               <div className="details">
-                                <div className="grid grid-cols-6 gap-8">
-                                  <div className="col-span-6 relative">
+                                <div className="grid grid-cols-3 gap-8">
+                                  <div className="col-span-3 relative">
                                     <label
                                       htmlFor="email-address"
                                       className="sr-only"

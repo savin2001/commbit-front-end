@@ -54,7 +54,7 @@ const FileUpload = ({ user }) => {
     }
     // Continue if file is selected
     // Create a directory URL where the file shall be stored
-    const storageRef = ref(store, `/files/${file.name}`);
+    const storageRef = ref(store, `/back_office_documents/${file.name}`);
     // Upload the file
     const uploadDoc = uploadBytesResumable(storageRef, file);
     uploadDoc.on(

@@ -33,14 +33,15 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      if (user) {
+      if (currentUser) {
         // Use the user object retrieved from localStorage
         const storedUser = localStorage.getItem("upd");
         if (storedUser) {
           const user_det = JSON.parse(storedUser);
           //setUser(user_det);
-          setUserDet(user_det)
+          setUserDet(user_det);
           setUserType(user_det.user_type);
+          user_det.uid = currentUser.uid; // Add the currentUser.uid as a value with the key "uid"
         } else {
           // Handle the case when the "upd" item is not found in localStorage
           console.log("No user data found");
@@ -114,7 +115,7 @@ export default function App() {
                   </PrivateRoute>
                 }
               />
-              
+
               {/* Admin pages */}
               <Route
                 exact

@@ -6,7 +6,6 @@ import BackOfficeDashBoard from "../../components/dashboards/BackOfficeDashBoard
 import SideMenu from "../../components/side_menu/SideMenu";
 import EventMgrDashBoard from "../../components/dashboards/EventMgrDashBoard";
 import ContentMgrDashBoard from "../../components/dashboards/ContentMgrDashBoard";
-
 import PropTypes from "prop-types";
 import Error from "../../components/data_fetch_state/Error";
 
@@ -18,9 +17,9 @@ const DashBoard = ({ user }) => {
 
   useEffect(() => {
     if (user) {
-      // Handle the case when the user is not found
       setUserType(user.user_type);
     } else {
+      // Handle the case when the user is not found
       setError({ message: "No user data found" });
     }
     setLoading(false);
@@ -29,10 +28,10 @@ const DashBoard = ({ user }) => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <Loading /> // Display the loading state if data is still loading
       ) : (
         <>
-          <Navbar />
+          <Navbar /> {/* Render the Navbar */}
           <div className="mx-auto ">
             <div className="drawer drawer-mobile">
               <input
@@ -44,6 +43,7 @@ const DashBoard = ({ user }) => {
                 <>
                   {user ? (
                     <>
+                      {/* Render the content if user data exists */}
                       <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
                         <header className="w-full">
                           <h2 className="my-6 text-left text-3xl font-extrabold text-neutral capitalize">
@@ -51,7 +51,8 @@ const DashBoard = ({ user }) => {
                           </h2>
                         </header>
                         <main className="w-full">
-                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-accent border-dashed rounded-md">
+                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md">
+                            {/* Render the appropriate dashboard based on user type */}
                             {userType === userRole[0] && (
                               <AdminDashBoard user={user} />
                             )}
@@ -67,16 +68,21 @@ const DashBoard = ({ user }) => {
                           </div>
                         </main>
                       </div>
-                      <SideMenu />
+                      <SideMenu /> {/* Render the SideMenu */}
                     </>
                   ) : (
                     <>
-                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
-                        <div className="flex w-full items-center justify-center">
-                          <Error error={error} />
-                        </div>
-                      </div>
-                      <SideMenu />
+                      {error && (
+                        <>
+                          {/* Render the error state */}
+                          <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
+                            <div className="flex w-full items-center justify-center">
+                              <Error error={error} /> {/* Render the Error component */}
+                            </div>
+                          </div>
+                          <SideMenu /> {/* Render the SideMenu */}
+                        </>
+                      )}
                     </>
                   )}
                 </>

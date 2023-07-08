@@ -4,6 +4,7 @@ import Loading from "../../components/data_fetch_state/Loading";
 import SideMenu from "../../components/side_menu/SideMenu";
 import PropTypes from "prop-types";
 import Error from "../../components/data_fetch_state/Error";
+import FileUpload from "../../components/file_upload/FileUpload";
 
 const Documents = ({ user }) => {
   const [loading, setLoading] = useState(true);
@@ -20,10 +21,10 @@ const Documents = ({ user }) => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <Loading /> // Display the loading state if data is still loading
       ) : (
         <>
-          <Navbar />
+          <Navbar /> {/* Render the Navbar */}
           <div className="mx-auto ">
             <div className="drawer drawer-mobile">
               <input
@@ -35,6 +36,7 @@ const Documents = ({ user }) => {
                 <>
                   {user ? (
                     <>
+                      {/* Render the content if user data exists */}
                       <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
                         <header className="w-full">
                           <h2 className="my-6 text-left text-3xl font-extrabold text-neutral capitalize">
@@ -42,19 +44,26 @@ const Documents = ({ user }) => {
                           </h2>
                         </header>
                         <main className="w-full">
-                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6"></div>
+                          <div className="flex justify-center pb-6">
+                            <FileUpload user={user} /> {/* Render the FileUpload component */}
+                          </div>
                         </main>
                       </div>
-                      <SideMenu />
+                      <SideMenu /> {/* Render the SideMenu */}
                     </>
                   ) : (
                     <>
-                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
-                        <div className="flex w-full items-center justify-center">
-                          <Error error={error} />
-                        </div>
-                      </div>
-                      <SideMenu />
+                      {error && (
+                        <>
+                          {/* Render the error state */}
+                          <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
+                            <div className="flex w-full items-center justify-center">
+                              <Error error={error} /> {/* Render the Error component */}
+                            </div>
+                          </div>
+                          <SideMenu /> {/* Render the SideMenu */}
+                        </>
+                      )}
                     </>
                   )}
                 </>

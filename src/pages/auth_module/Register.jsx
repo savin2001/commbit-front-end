@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { auth, db } from "../../components/firebase/firebase";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { auth } from "../../components/firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
@@ -17,6 +16,8 @@ import {
 } from "react-icons/ai";
 import { MdPersonOutline } from "react-icons/md";
 import Loading from "../../components/data_fetch_state/Loading";
+import axios from "axios";
+import useFetchBackendRoute from "../../components/backend_connection/useFetchBackendRoute";
 
 function Register() {
   const [fName, setFName] = useState("");
@@ -32,6 +33,9 @@ function Register() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { setTimeActive } = useAuthValue();
+  const backend = useFetchBackendRoute()
+
+  const commBitReg = `${backend}/users/post`;
 
   // Password visible
   const checkPassword = () => {
@@ -100,25 +104,31 @@ function Register() {
     setLoading(true);
 
     try {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password); // Create a new user account with email and password
-      const userRef = collection(db, userType); // Get the collection reference based on userType
-    
-      await setDoc(
-        doc(userRef, user.uid),
-        {
-          user_type: userType,
+      // Insert the user into the database here
+      await axios
+        .post(commBitReg, {
           email: email,
           first_name: fName,
-          second_name: sName,
+          last_name: sName,
           phone_number: phone,
-        },
-        { merge: true } // Update the user document with the new data, merging existing data
-      );
-    
-      await sendEmailVerification(user); // Send email verification to the user
-      setTimeActive(true); // Set timeActive state to true
-      setLoading(false); // Set loading state to false
-      navigate("/verify-email"); // Navigate to the "verify-email" page
+          user_type: userType,
+        })
+        .then(async () => {
+          // Create a new user account with email and password
+          const { user } = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          await sendEmailVerification(user); // Send email verification to the user
+          setTimeActive(true); // Set timeActive state to true
+          setLoading(false); // Set loading state to false
+          navigate("/verify-email"); // Navigate to the "verify-email" page
+        })
+        .catch(function (err) {
+          console.log(err);
+          setError(err.message);
+        });
     } catch (err) {
       setLoading(false); // Set loading state to false
       setFName("");
@@ -130,7 +140,6 @@ function Register() {
       setUserType("");
       setError(err.message); // Set error state with the error message
     }
-    
   };
 
   return (

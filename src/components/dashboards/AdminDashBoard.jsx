@@ -1,7 +1,30 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import useFetchBackendRoute from "../backend_connection/useFetchBackendRoute";
+import axios from "axios";
 
 const AdminDashBoard = ({ user }) => {
+  const [count, setCount] = useState(0);
+  const [error, setError] = useState(null);
+  const backend = useFetchBackendRoute();
+
+  const userCount = `${backend}/users/count`;
+
+  useEffect(() => {
+    fetchUserCount();
+  }, []);
+
+  const fetchUserCount = async () => {
+    try {
+      const response = await axios.get(userCount);
+      setCount(response.data);
+      console.log(response.data)
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+  
   return (
     <div className="mb-8 w-full">
       {/* Summary of users and documents */}
@@ -13,7 +36,13 @@ const AdminDashBoard = ({ user }) => {
           >
             <div className="stat">
               <div className="stat-title">Total Users</div>
-              <div className="stat-value text-neutral">0</div>
+              {error ? (
+                <p>Error: {error}</p>
+              ) : (
+                <div className="stat-value text-neutral">
+                  {count ? count.totalUsers : 0}
+                </div>
+              )}
             </div>
           </Link>
           <Link

@@ -7,7 +7,7 @@ import { store } from "../firebase/firebase";
 import { ref, uploadBytesResumable } from "firebase/storage";
 //import { filesize } from "filesize";
 
-const FileUpload = ({ user }) => {
+const DocUpload = ({ user }) => {
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
 
@@ -204,7 +204,7 @@ const FileUpload = ({ user }) => {
 };
 
 // Prop Types
-FileUpload.propTypes = {
+DocUpload.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
     user_type: PropTypes.string.isRequired,
@@ -212,4 +212,4 @@ FileUpload.propTypes = {
   }).isRequired,
 };
 
-export default FileUpload;
+export default DocUpload;

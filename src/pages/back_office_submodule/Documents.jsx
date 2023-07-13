@@ -4,7 +4,7 @@ import Loading from "../../components/data_fetch_state/Loading";
 import SideMenu from "../../components/side_menu/SideMenu";
 import PropTypes from "prop-types";
 import Error from "../../components/data_fetch_state/Error";
-import FileUpload from "../../components/file_upload/FileUpload";
+import DocUpload from "../../components/documents/DocUpload";
 
 const Documents = ({ user }) => {
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,8 @@ const Documents = ({ user }) => {
                         </header>
                         <main className="w-full">
                           <div className="flex justify-center pb-6">
-                            <FileUpload user={user} /> {/* Render the FileUpload component */}
+                            <DocUpload user={user} /> {/* Render the DocUpload component */}
+                            <DocUpload user={user} /> {/* Render the DocUpload component */}
                           </div>
                         </main>
                       </div>

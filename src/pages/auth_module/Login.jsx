@@ -4,8 +4,7 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { auth, db } from "../../components/firebase/firebase";
-import { getDoc, doc } from "firebase/firestore";
+import { auth } from "../../components/firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuthValue } from "../../components/firebase/AuthContext";
 import {
@@ -16,16 +15,21 @@ import {
   AiOutlineArrowLeft,
 } from "react-icons/ai";
 import Loading from "../../components/data_fetch_state/Loading";
+import axios from "axios";
+import useFetchBackendRoute from "../../components/backend_connection/useFetchBackendRoute";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [visibility, setVisibility] = useState(false);
-  const userType = ["admin", "content_manager", "event_manager", "back_office"];
   const [error, setError] = useState("");
   const { setTimeActive } = useAuthValue();
   const navigate = useNavigate();
+
+  const backend = useFetchBackendRoute();
+
+  const commBitLogin = `${backend}/users/login`;
 
   // Password visible
   const checkPassword = () => {
@@ -38,63 +42,70 @@ function Login() {
   };
 
   // Login user
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
     setLoading(true); // Set loading state to true
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async () => {
-        const userRefPromises = userType.map((type) =>
-          getDoc(doc(db, type, auth.currentUser.uid))
-        );
-        const userSnapshots = await Promise.all(userRefPromises);
-        const userSnapshot = userSnapshots.find((snapshot) => snapshot.exists());
-  
-        if (userSnapshot) {
-          const user = userSnapshot.data();
-          localStorage.setItem("upd", JSON.stringify(user)); // Store user data in local storage
-        } else {
-          throw new Error("User not found or invalid user type"); // Throw error if user not found or invalid user type
-        }
-      })
-      .then(() => {
-        if (!auth.currentUser.emailVerified) {
-          sendEmailVerification(auth.currentUser)
-            .then(() => {
-              setTimeActive(true); // Set timeActive state to true
-              navigate("/verify-email"); // Navigate to the "verify-email" page
-            })
-            .catch((err) => {
-              setLoading(false); // Set loading state to false
-              setEmail("");
-              setPassword("");
-              setError(err.message); // Set error state with the error message
-            });
-        } else {
-          const storedUser = JSON.parse(localStorage.getItem("upd"));
-          // console.log(storedUser);
-          if (storedUser != null) {
-            const dashboardPath = `/${storedUser.user_type}/dashboard`;
-            navigate(dashboardPath); // Navigate to the user's dashboard based on user type
-          } else {
-            // console.log("No user data found");
-          }
-          // console.log("User verified");
-          navigate("/"); // Navigate to the home page
-        }
-      })
-      .catch((err) => {
-        setLoading(false); // Set loading state to false
-        setEmail("");
-        setPassword("");
-        console.log(err);
-        if (err.message === "Firebase: Error (auth/network-request-failed).") {
-          setError("Network error. Check your internet connection"); // Set error state for network error
-        } else {
-          setError(err.message); // Set error state with the error message
-        }
-      });
-  };
+    try {
+      const response = await axios.post(commBitLogin, { email });
+      // Handle successful login response
+      const userData = response.data.user;
+      console.log(userData);
+      if (userData) {
+        const user = userData;
+        localStorage.setItem("upd", JSON.stringify(user)); // Store user data in local storage
+      } else {
+        throw new Error("User not found or invalid user type"); // Throw error if user not found or invalid user type
+      }
 
+      await signInWithEmailAndPassword(auth, email, password)
+        .then(async () => {
+          const storedUser = JSON.parse(localStorage.getItem("upd"));
+          navigate(`/${storedUser.user_type}/dashboard`);
+        })
+        .then(() => {
+          if (!auth.currentUser.emailVerified) {
+            sendEmailVerification(auth.currentUser)
+              .then(() => {
+                setTimeActive(true); // Set timeActive state to true
+                navigate("/verify-email"); // Navigate to the "verify-email" page
+              })
+              .catch((err) => {
+                setLoading(false); // Set loading state to false
+                setEmail("");
+                setPassword("");
+                setError(err.message); // Set error state with the error message
+              });
+          } else {
+            const storedUser = JSON.parse(localStorage.getItem("upd"));
+            // console.log(storedUser);
+            if (storedUser != null) {
+              const dashboardPath = `/${storedUser.user_type}/dashboard`;
+              navigate(dashboardPath); // Navigate to the user's dashboard based on user type
+            } else {
+              // console.log("No user data found");
+            }
+            // console.log("User verified");
+            navigate("/"); // Navigate to the home page
+          }
+        })
+        .catch((err) => {
+          setLoading(false); // Set loading state to false
+          setEmail("");
+          setPassword("");
+          console.log(err);
+          if (
+            err.message === "Firebase: Error (auth/network-request-failed)."
+          ) {
+            setError("Network error. Check your internet connection"); // Set error state for network error
+          } else {
+            setError(err.message); // Set error state with the error message
+          }
+        });
+    } catch (error) {
+      // Handle login error
+      setError("Login failed. Invalid email or password");
+    }
+  };
 
   return (
     <>

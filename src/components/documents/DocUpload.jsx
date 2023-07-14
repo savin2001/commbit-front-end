@@ -5,11 +5,15 @@ import { FaFileUpload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { store } from "../firebase/firebase";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import useFetchBackendRoute from "../backend_connection/useFetchBackendRoute";
+import axios from "axios";
 //import { filesize } from "filesize";
 
 const DocUpload = ({ user }) => {
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
+  const backend = useFetchBackendRoute();
+  const docUploadRoute = `${backend}/docs/upload`;
 
   const fileHandler = (e) => {
     e && e.preventDefault();
@@ -31,6 +35,7 @@ const DocUpload = ({ user }) => {
       "jpg",
       "pdf",
       "txt",
+      "csv",
     ];
     const fileExtension = file.name.split(".").pop().toLowerCase();
     const isFormatAllowed = allowedFormats.includes(fileExtension);
@@ -49,14 +54,44 @@ const DocUpload = ({ user }) => {
 
   const uploadFile = (file) => {
     // If no file is selected then throw an error
+    // {
+    //   "id": 1,
+    //   "subcategory_id": 1,
+    //   "filename": "document1.pdf",
+    //   "file_url": "https://example.com/document1.pdf",
+    //   "file_size": 1024,
+    //   "uploaded_by": 5,
+    //   "created_at": "2023-07-10T18:44:22.000Z",
+    //   "del_flg": "Y",
+    //   "user_email": "user5@example.com",
+    //   "document_group": "Budgets"
+    // }
+
     if (!file) {
       return setError("Kindly choose a file for upload");
     }
     // Continue if file is selected
-    // Create a directory URL where the file shall be stored
-    const storageRef = ref(store, `/back_office_documents/${file.name}`);
+
     // Upload the file
+    const subcategory_id = 2; // Replace with the appropriate value
+    const filename = file.name;
+    const file_url = `/back_office_documents/${file.name}`; // Replace with the appropriate value
+    const file_size = file.size;
+    // eslint-disable-next-line react/prop-types
+    const email = user.email; // Replace with the appropriate value
+
+    const documentData = {
+      subcategory_id,
+      filename,
+      file_url,
+      file_size,
+      email,
+    };
+    // Create a directory URL where the file shall be stored
+    const storageRef = ref(store, file_url);
     const uploadDoc = uploadBytesResumable(storageRef, file);
+    const response = axios.post(docUploadRoute, documentData);
+    console.log(response.data);
     uploadDoc.on(
       "state_changed",
       (snapshot) => {
@@ -78,7 +113,7 @@ const DocUpload = ({ user }) => {
       <div className="w-full flex items-center justify-start py-8">
         <label
           htmlFor="profile-pic-modal"
-          className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer max-w-7xl"
+          className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer max-w-5xl"
         >
           <label className="block text-lg font-semibold text-neutral">
             Upload new document

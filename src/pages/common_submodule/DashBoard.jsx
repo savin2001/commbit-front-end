@@ -44,14 +44,14 @@ const DashBoard = ({ user }) => {
                   {user ? (
                     <>
                       {/* Render the content if user data exists */}
-                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
+                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6  lg:px-8">
                         <header className="w-full">
                           <h2 className="my-6 text-left text-3xl font-extrabold text-neutral capitalize">
                             Welcome {user && user.first_name}
                           </h2>
                         </header>
                         <main className="w-full">
-                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md">
+                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md  p-4">
                             {/* Render the appropriate dashboard based on user type */}
                             {userType === userRole[0] && (
                               <AdminDashBoard user={user} />

@@ -5,6 +5,7 @@ import SideMenu from "../../components/side_menu/SideMenu";
 import PropTypes from "prop-types";
 import Error from "../../components/data_fetch_state/Error";
 import DocUpload from "../../components/documents/DocUpload";
+import DocumentRepo from "../../components/documents/DocumentRepo";
 
 const Documents = ({ user }) => {
   const [loading, setLoading] = useState(true);
@@ -37,15 +38,16 @@ const Documents = ({ user }) => {
                   {user ? (
                     <>
                       {/* Render the content if user data exists */}
-                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8">
+                      <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8 p-4">
                         <header className="w-full">
                           <h2 className="my-6 text-left text-3xl font-extrabold text-neutral capitalize">
                             Documents
                           </h2>
                         </header>
                         <main className="w-full">
-                          <div className="flex justify-center pb-6">
+                          <div className="flex flex-col justify-center pb-6">
                             <DocUpload user={user} /> {/* Render the DocUpload component */}
+                            <DocumentRepo user={user}/>
                           </div>
                         </main>
                       </div>

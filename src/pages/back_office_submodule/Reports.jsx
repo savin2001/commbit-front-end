@@ -159,88 +159,92 @@ const Reports = ({ user }) => {
                             </p>
                           </header>
                         </div>
-                        <div className="w-full mb-8">
-                          <header className="w-full">
-                            <h3 className="my-6 text-left text-2xl font-extrabold text-neutral capitalize">
-                              Users Reports
-                            </h3>
-                          </header>
-                          <div className="mb-8 w-full">
-                            {/* Users */}
-                            <div className="mb-5 mt-3">
-                              <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-4 sm:gap-8">
-                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-base-100 text-neutral">
-                                  <div
-                                    className="stat cursor-pointer"
-                                    onClick={(e) => {
-                                      e && e.preventDefault;
-                                      const title = "Total Users";
-                                      downloadCSV(users, title);
-                                    }}
-                                  >
-                                    <div className="stat-title">
-                                      Total Users
-                                    </div>
-                                    <div className="stat-value mt-2 p-4">
-                                      <button className="btn w-full btn-primary btn-outline">
-                                        <BsDownload className="h-6 w-6" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-success text-base-100">
-                                  <div
-                                    className="stat cursor-pointer"
-                                    onClick={(e) => {
-                                      e && e.preventDefault;
-                                      const title = "Active Users";
-                                      downloadCSV(activeUsers, title);
-                                    }}
-                                  >
-                                    <div className="stat-title text-base-100">
-                                      Active Users
-                                    </div>
-                                    <div className="stat-value mt-2 p-4">
-                                      <button className="btn w-full btn-neutral btn-outline">
-                                        <BsDownload className="h-6 w-6" />
-                                      </button>
+                        {/* Users */}
+                        {user.user_type === "admin" && (
+                          <div className="w-full mb-8">
+                            <header className="w-full">
+                              <h3 className="my-6 text-left text-2xl font-extrabold text-neutral capitalize">
+                                Users Reports
+                              </h3>
+                            </header>
+                            <div className="mb-8 w-full">
+                              <div className="mb-5 mt-3">
+                                <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-4 sm:gap-8">
+                                  <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-base-100 text-neutral">
+                                    <div
+                                      className="stat cursor-pointer"
+                                      onClick={(e) => {
+                                        e && e.preventDefault;
+                                        const title = "Total Users";
+                                        downloadCSV(users, title);
+                                      }}
+                                    >
+                                      <div className="stat-title">
+                                        Total Users
+                                      </div>
+                                      <div className="stat-value mt-2 p-4">
+                                        <button className="btn w-full btn-primary btn-outline">
+                                          <BsDownload className="h-6 w-6" />
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-secondary text-base-100">
-                                  <div
-                                    className="stat cursor-pointer"
-                                    onClick={(e) => {
-                                      e && e.preventDefault;
-                                      const title = "Disabled Users";
-                                      downloadCSV(inactiveUsers, title);
-                                    }}
-                                  >
-                                    <div className="stat-title text-base-100">
-                                      Disabled Users
+                                  <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-success text-base-100">
+                                    <div
+                                      className="stat cursor-pointer"
+                                      onClick={(e) => {
+                                        e && e.preventDefault;
+                                        const title = "Active Users";
+                                        downloadCSV(activeUsers, title);
+                                      }}
+                                    >
+                                      <div className="stat-title text-base-100">
+                                        Active Users
+                                      </div>
+                                      <div className="stat-value mt-2 p-4">
+                                        <button className="btn w-full btn-neutral btn-outline">
+                                          <BsDownload className="h-6 w-6" />
+                                        </button>
+                                      </div>
                                     </div>
-                                    <div className="stat-value mt-2 p-4">
-                                      <button className="btn w-full btn-outline">
-                                        <BsDownload className="h-6 w-6" />
-                                      </button>
+                                  </div>
+                                  <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-secondary text-base-100">
+                                    <div
+                                      className="stat cursor-pointer"
+                                      onClick={(e) => {
+                                        e && e.preventDefault;
+                                        const title = "Disabled Users";
+                                        downloadCSV(inactiveUsers, title);
+                                      }}
+                                    >
+                                      <div className="stat-title text-base-100">
+                                        Disabled Users
+                                      </div>
+                                      <div className="stat-value mt-2 p-4">
+                                        <button className="btn w-full btn-outline">
+                                          <BsDownload className="h-6 w-6" />
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        )}
+
+                        
                         <div className="w-full mb-8">
                           <header className="w-full">
                             <h3 className="my-6 text-left text-2xl font-extrabold text-neutral capitalize">
-                              Other Reports
+                              Detailed Reports
                             </h3>
                           </header>
                           <div className="mb-8 w-full">
                             {/* Users */}
                             <div className="mb-5 mt-3">
                               <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-4 sm:gap-8">
-                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-base-100 text-neutral">
+                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md bg-base-100 text-neutral">
                                   <div
                                     className="stat cursor-pointer"
                                     onClick={(e) => {
@@ -259,7 +263,7 @@ const Reports = ({ user }) => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-base-100 text-neutral">
+                                <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md bg-base-100 text-neutral">
                                   <div
                                     className="stat cursor-pointer"
                                     onClick={(e) => {
@@ -268,9 +272,7 @@ const Reports = ({ user }) => {
                                       downloadCSV(events, title);
                                     }}
                                   >
-                                    <div className="stat-title">
-                                      All Events
-                                    </div>
+                                    <div className="stat-title">All Events</div>
                                     <div className="stat-value mt-2 p-4">
                                       <button className="btn w-full btn-primary btn-outline">
                                         <BsDownload className="h-6 w-6" />

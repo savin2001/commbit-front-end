@@ -46,7 +46,6 @@ const Documents = ({ user }) => {
                         <main className="w-full">
                           <div className="flex justify-center pb-6">
                             <DocUpload user={user} /> {/* Render the DocUpload component */}
-                            <DocUpload user={user} /> {/* Render the DocUpload component */}
                           </div>
                         </main>
                       </div>

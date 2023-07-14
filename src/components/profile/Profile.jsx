@@ -34,7 +34,7 @@ function Profile() {
       setEmail(user.email);
       setFName(user.first_name);
       setPhone(user.phone_number);
-      setSName(user.second_name);
+      setSName(user.last_name);
       setUserType(user.user_type);
     } else {
       // Set error if no user is found
@@ -70,7 +70,7 @@ function Profile() {
           user_type: userType,
           email: email,
           first_name: fName,
-          second_name: sName,
+          last_name: sName,
           phone_number: phone,
         });
       })

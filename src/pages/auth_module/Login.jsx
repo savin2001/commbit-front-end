@@ -49,11 +49,11 @@ function Login() {
       const response = await axios.post(commBitLogin, { email });
       // Handle successful login response
       const userData = response.data.user;
-      console.log(userData);
       if (userData) {
         const user = userData;
         localStorage.setItem("upd", JSON.stringify(user)); // Store user data in local storage
       } else {
+        setLoading(false);
         throw new Error("User not found or invalid user type"); // Throw error if user not found or invalid user type
       }
 

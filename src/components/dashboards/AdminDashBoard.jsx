@@ -24,7 +24,6 @@ const AdminDashBoard = ({ user }) => {
     try {
       const response = await axios.get(userCount);
       setCountUsers(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -34,7 +33,6 @@ const AdminDashBoard = ({ user }) => {
     try {
       const response = await axios.get(docsCount);
       setCountDocs(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -44,7 +42,6 @@ const AdminDashBoard = ({ user }) => {
     try {
       const response = await axios.get(eventsCount);
       setCountEvents(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -52,7 +49,7 @@ const AdminDashBoard = ({ user }) => {
 
   return (
     <div className="mb-8 w-full">
-      {/* Summary of users and documents */}
+      {/* Summary of organization */}
       <div className="mb-5">
         <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-4 sm:gap-8">
           <Link

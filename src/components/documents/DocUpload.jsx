@@ -78,7 +78,7 @@ const DocUpload = ({ user }) => {
       <div className="w-full flex items-center justify-start py-8">
         <label
           htmlFor="profile-pic-modal"
-          className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer"
+          className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer max-w-7xl"
         >
           <label className="block text-lg font-semibold text-neutral">
             Upload new document

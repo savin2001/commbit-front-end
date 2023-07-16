@@ -40,7 +40,7 @@ const Documents = ({ user }) => {
                       {/* Render the content if user data exists */}
                       <div className="drawer-content flex flex-col items-start justify-start mt-16  py-6 sm:px-6 lg:px-8 p-4">
                         <header className="w-full">
-                          <h2 className="my-6 text-left text-3xl font-extrabold text-neutral capitalize">
+                          <h2 className="my-6 text-left text-3xl font-extrabold text-primary capitalize">
                             Documents
                           </h2>
                         </header>

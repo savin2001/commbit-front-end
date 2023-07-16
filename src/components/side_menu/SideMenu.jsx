@@ -25,7 +25,7 @@ const SideMenu = () => {
               </li>
             </>
           )}
-          {user.user_type === userRole[1] && (
+          {/* {user.user_type === userRole[1] && (
             <>
               <li>
                 <Link className="lg:mb-3" to={`/${user.user_type}/media`}>media</Link>
@@ -34,14 +34,14 @@ const SideMenu = () => {
                 <Link className="lg:mb-3" to={`/${user.user_type}/blogs`}>blogs</Link>
               </li>
             </>
-          )}
+          )} */}
           {user.user_type === userRole[2] && (
             <>
               <li>
                 <Link className="lg:mb-3" to={`/${user.user_type}/events`}>events</Link>
               </li>
               <li>
-                <Link className="lg:mb-3" to={`/${user.user_type}/participants`}>participants</Link>
+                {/* <Link className="lg:mb-3" to={`/${user.user_type}/participants`}>participants</Link> */}
               </li>
             </>
           )}

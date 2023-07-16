@@ -4,8 +4,8 @@ import Loading from "../../components/data_fetch_state/Loading";
 import SideMenu from "../../components/side_menu/SideMenu";
 import PropTypes from "prop-types";
 import Error from "../../components/data_fetch_state/Error";
-import DocUpload from "../../components/documents/DocUpload";
-import DocumentRepo from "../../components/documents/DocumentRepo";
+import EventCreation from "../../components/events/EventCreation";
+import EventList from "../../components/events/EventList";
 
 const Events = ({ user }) => {
   const [loading, setLoading] = useState(true);
@@ -46,8 +46,8 @@ const Events = ({ user }) => {
                         </header>
                         <main className="w-full">
                           <div className="flex flex-col justify-center pb-6">
-                            <DocUpload user={user} /> {/* Render the DocUpload component */}
-                            <DocumentRepo user={user}/>
+                            <EventCreation user={user} /> {/* Render the DocUpload component */}
+                            <EventList user={user}/>
                           </div>
                         </main>
                       </div>

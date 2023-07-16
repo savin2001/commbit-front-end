@@ -142,7 +142,7 @@ const Documents = ({ user }) => {
                             </h3>
                             <div className="flex flex-wrap md:flex-nowrap w-full justify-center md:justify-start gap-4 sm:gap-8">
                               <div className="overflow-x-auto">
-                                <table className="table w-full md:w-screen">
+                                <table className="table w-full md:w-screen md:max-w-5xl">
                                   {/* head */}
                                   <thead>
                                     <tr>

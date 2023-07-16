@@ -36,6 +36,7 @@ const DocUpload = ({ user }) => {
       "pdf",
       "txt",
       "csv",
+      "pptx",
     ];
     const fileExtension = file.name.split(".").pop().toLowerCase();
     const isFormatAllowed = allowedFormats.includes(fileExtension);
@@ -182,7 +183,7 @@ const DocUpload = ({ user }) => {
                         <FaFileUpload className="mx-auto h-24 w-24  text-base-200 my-5" />
 
                         <p className="text-xs text-secondary">
-                          DOC, DOCX, XLS, XLSX, PNG, JPG, TXT and PDF up to 10MB
+                          DOC, DOCX, XLS, XLSX, PNG, JPG, TXT, CSV,PPTX and PDF up to 10MB
                         </p>
                         <div className="flex text-sm text-gray-600 ">
                           <label

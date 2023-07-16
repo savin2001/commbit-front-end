@@ -51,7 +51,7 @@ const SideMenu = () => {
                 <Link className="lg:mb-3" to={`/${user.user_type}/documents`}>documents</Link>
               </li>
               <li>
-                <Link className="lg:mb-3" to={`/${user.user_type}/reports`}>Reports</Link>
+                <Link className="lg:mb-3" to={`/${user.user_type}/doc-reports`}>Reports</Link>
               </li>
             </>
           )}

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -12,16 +13,18 @@ const BackOfficeDashBoard = ({ user }) => {
 
   const backend = useFetchBackendRoute();
 
-  const docsCount = `${backend}/docs/count`;
+  const docsCount = `${backend}/docs/count/${user.email}`;
 
   useEffect(() => {
     fetchDocsCount();
-  }, []);
+  }, [user]);
 
   const fetchDocsCount = async () => {
     try {
-      const response = await axios.get(docsCount);
+      // console.log(user.email)
+      const response = await axios.get(docsCount, { email: user.email });
       setCountDocs(response.data);
+      // console.log(response.data);
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -59,20 +62,20 @@ const BackOfficeDashBoard = ({ user }) => {
                   <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-success text-base-100">
                     <div className="stat">
                       <div className="stat-title text-base-100">
-                        Active Documents
+                        My Documents
                       </div>
                       <div className="stat-value">
-                        {countDocs ? countDocs.totalActive : 0}
+                        {countDocs ? countDocs.totalMine : 0}
                       </div>
                     </div>
                   </div>
                   <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-secondary text-base-100">
                     <div className="stat">
                       <div className="stat-title text-base-100">
-                        Archived Documents
+                        Shared Documents
                       </div>
                       <div className="stat-value">
-                        {countDocs ? countDocs.totalDisabled : 0}
+                        {countDocs ? countDocs.totalShared : 0}
                       </div>
                     </div>
                   </div>

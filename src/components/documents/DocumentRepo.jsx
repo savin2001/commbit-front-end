@@ -14,12 +14,18 @@ const Documents = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(true);
   const [docs, setDocs] = useState(null);
+  const [docsMine, setDocsMine] = useState(null);
+  const [docsShared, setDocsShared] = useState(null);
 
   const backend = useFetchBackendRoute();
   const docsList = `${backend}/docs/all`;
+  const docsMineList = `${backend}/docs/mine/${user.email}`;
+  const docsSharedList = `${backend}/docs/shared/${user.email}`;
 
   useEffect(() => {
     fetchDocs();
+    fetchMyDocs();
+    fetchSharedDocs();
     if (!user) {
       // Handle the case when the user is not found
       setError({ message: "No user data found" });
@@ -32,7 +38,26 @@ const Documents = ({ user }) => {
       const response = await axios.get(docsList);
       setDocs(response.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setError(error.response.data.message);
+    }
+  };
+
+  const fetchMyDocs = async () => {
+    try {
+      const response = await axios.get(docsMineList, { email: user.email });
+      // console.log("My docs", response.data);
+      setDocsMine(response.data);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+  const fetchSharedDocs = async () => {
+    try {
+      const response = await axios.get(docsSharedList, { email: user.email });
+      // console.log("Shared docs", response.data);
+      setDocsShared(response.data);
+    } catch (error) {
+      setError(error.response.data.message);
     }
   };
 
@@ -89,51 +114,153 @@ const Documents = ({ user }) => {
                   <div className="mb-8 w-full">
                     {/* Docs */}
                     <div className="mb-5 mt-3">
-                      <h3 className="mt-8 mb-4 text-left text-xl font-extrabold text-neutral">
-                        Document List
-                      </h3>
-                      <div className="flex flex-wrap md:flex-nowrap w-full justify-center md:justify-start gap-4 sm:gap-8">
-                        <div className="overflow-x-auto">
-                          <table className="table w-full md:w-screen max-w-5xl">
-                            {/* head */}
-                            <thead>
-                              <tr>
-                                <th>id</th>
-                                <th>filename</th>
-                                <th>uploaded_by</th>
-                                <th>downLoad</th>
-                              </tr>
-                            </thead>
+                      <details className="collapse collapse-open bg-base-200 max-w-5xl my-6">
+                        <summary className="collapse-title text-xl font-medium">
+                          All Documents
+                        </summary>
+                        <div className="collapse-content">
+                          <div className="overflow-x-auto">
+                            <table className="table w-full md:w-full max-w-5xl">
+                              {/* head */}
+                              <thead>
+                                <tr>
+                                  <th>id</th>
+                                  <th>filename</th>
+                                  <th>uploaded_by</th>
+                                  <th>email</th>
+                                  <th>downLoad</th>
+                                </tr>
+                              </thead>
 
-                            <tbody>
-                              {docs && (
-                                <>
-                                  {docs?.map((doc) => (
-                                    <tr className="hover" key={doc.id}>
-                                      <th>{doc.id}</th>
-                                      <td>{doc.filename}</td>
-                                      <td>{doc.user_email}</td>
-                                      <td>
-                                        <button
-                                          className="btn bt-sm btn-primary btn-outline"
-                                          onClick={() => {
-                                            downloadDoc(
-                                              doc.filename,
-                                              doc.file_url
-                                            );
-                                          }}
-                                        >
-                                          <BsDownload className="h-6 w-6" />
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </>
-                              )}
-                            </tbody>
-                          </table>
+                              <tbody>
+                                {docs && (
+                                  <>
+                                    {docs?.map((doc) => (
+                                      <tr className="hover" key={doc.id}>
+                                        <th>{doc.id}</th>
+                                        <td>{doc.filename}</td>
+                                        <td>{doc.uploaded_by}</td>
+                                        <td>{doc.user_email}</td>
+                                        <td>
+                                          <button
+                                            className="btn bt-sm btn-primary btn-outline"
+                                            onClick={() => {
+                                              downloadDoc(
+                                                doc.filename,
+                                                doc.file_url
+                                              );
+                                            }}
+                                          >
+                                            <BsDownload className="h-6 w-6" />
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                      </div>
+                      </details>
+                      <details className="collapse collapse-open bg-base-200 max-w-5xl my-6">
+                        <summary className="collapse-title text-xl font-medium">
+                          My Documents
+                        </summary>
+                        <div className="collapse-content">
+                          <div className="overflow-x-auto">
+                            <table className="table w-full md:w-full max-w-5xl">
+                              {/* head */}
+                              <thead>
+                                <tr>
+                                  <th>id</th>
+                                  <th>filename</th>
+                                  <th>uploaded_by</th>
+                                  <th>email</th>
+                                  <th>downLoad</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                {docsMine && (
+                                  <>
+                                    {docsMine?.map((doc) => (
+                                      <tr className="hover" key={doc.id}>
+                                        <th>{doc.id}</th>
+                                        <td>{doc.filename}</td>
+                                        <td>{doc.uploaded_by}</td>
+                                        <td>{doc.user_email}</td>
+                                        <td>
+                                          <button
+                                            className="btn bt-sm btn-primary btn-outline"
+                                            onClick={() => {
+                                              downloadDoc(
+                                                doc.filename,
+                                                doc.file_url
+                                              );
+                                            }}
+                                          >
+                                            <BsDownload className="h-6 w-6" />
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </details>
+                      <details className="collapse collapse-open bg-base-200 max-w-5xl my-6">
+                        <summary className="collapse-title text-xl font-medium">
+                          Shared Documents
+                        </summary>
+                        <div className="collapse-content">
+                          <div className="overflow-x-auto">
+                            <table className="table w-full md:w-full max-w-5xl">
+                              {/* head */}
+                              <thead>
+                                <tr>
+                                  <th>id</th>
+                                  <th>filename</th>
+                                  <th>uploaded_by</th>
+                                  <th>email</th>
+                                  <th>downLoad</th>
+                                </tr>
+                              </thead>
+
+                              <tbody>
+                                {docsShared && (
+                                  <>
+                                    {docsShared?.map((doc) => (
+                                      <tr className="hover" key={doc.id}>
+                                        <th>{doc.id}</th>
+                                        <td>{doc.filename}</td>
+                                        <td>{doc.uploaded_by}</td>
+                                        <td>{doc.user_email}</td>
+                                        <td>
+                                          <button
+                                            className="btn bt-sm btn-primary btn-outline"
+                                            onClick={() => {
+                                              downloadDoc(
+                                                doc.filename,
+                                                doc.file_url
+                                              );
+                                            }}
+                                          >
+                                            <BsDownload className="h-6 w-6" />
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                  </>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </details>
                     </div>
                   </div>
                 </>

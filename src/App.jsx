@@ -19,6 +19,7 @@ import Events from "./pages/event_mngmt_submodule/Events";
 import Participants from "./pages/event_mngmt_submodule/Participants";
 import Documents from "./pages/back_office_submodule/Documents";
 import Reports from "./pages/back_office_submodule/Reports";
+import DocReport from "./components/documents/DocReport"
 
 export default function App() {
   // User state
@@ -185,6 +186,15 @@ export default function App() {
                 element={
                   <PrivateRoute>
                     <Reports user={userDet} />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                exact
+                path={`/:uid/doc-reports`}
+                element={
+                  <PrivateRoute>
+                    <DocReport user={userDet} />
                   </PrivateRoute>
                 }
               />

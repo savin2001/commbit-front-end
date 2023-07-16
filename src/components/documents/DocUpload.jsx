@@ -15,7 +15,7 @@ const DocUpload = ({ user }) => {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState(null);
   const [progress, setProgress] = useState(0);
   const backend = useFetchBackendRoute();
 

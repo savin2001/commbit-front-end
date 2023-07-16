@@ -10,28 +10,52 @@ import useFetchBackendRoute from "../../components/backend_connection/useFetchBa
 import { BsDownload } from "react-icons/bs";
 import { ExportToCsv } from "export-to-csv";
 
-const Reports = ({ user }) => {
+const DocReports = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(true);
   const [docs, setDocs] = useState(null);
   const [docsMine, setDocsMine] = useState(null);
   const [docsShared, setDocsShared] = useState(null);
+  const [docsBySub, setDocsBySub] = useState(null);
+  const [subcategories, setSubcategories] = useState([]);
+  const [subCategory, setSubCategory] = useState("");
 
   const backend = useFetchBackendRoute();
   const docsList = `${backend}/docs/all`;
   const docsMineList = `${backend}/docs/mine/${user.email}`;
   const docsSharedList = `${backend}/docs/shared/${user.email}`;
+  const subWithDocsCount = `${backend}/docs/sub-with-docs`;
+
   useEffect(() => {
     fetchDocs();
     fetchMyDocs();
     fetchSharedDocs();
+    fetchSubDocsCount();
+    if (subCategory) {
+      const docsBySub = `${backend}/docs/sub/${subCategory}`;
+      const fetchDocsBySub = async () => {
+        try {
+          console.log(subCategory);
+          const response = await axios.get(docsBySub);
+          setDocsBySub(response.data);
+
+          // Call downloadCSV here with the updated docsBySub value
+          const title = `Documents in ${subCategory}`;
+          downloadCSV(response.data, title);
+        } catch (error) {
+          setError(error.response.data.message);
+        }
+      };
+      fetchDocsBySub();
+    }
+
     if (!docs) {
       // Handle the case when doc data is not found
       setError({ message: "No doc data found" });
     }
 
     setLoading(false);
-  }, [user]);
+  }, [user, subCategory]);
 
   const fetchDocs = async () => {
     try {
@@ -56,6 +80,17 @@ const Reports = ({ user }) => {
       const response = await axios.get(docsSharedList, { email: user.email });
       // console.log("Shared docs", response.data);
       setDocsShared(response.data);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
+  const fetchSubDocsCount = async () => {
+    try {
+      // console.log(user.email)
+      const response = await axios.get(subWithDocsCount);
+      setSubcategories(response.data);
+      // console.log(response.data);
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -111,7 +146,7 @@ const Reports = ({ user }) => {
                         <div className="w-full mb-8">
                           <header className="w-full">
                             <h2 className="my-6 text-left text-3xl font-extrabold text-primary capitalize">
-                              Reports
+                              Document Reports
                             </h2>
                             <p className="my-6 text-left italic font-extrabold text-secondary capitalize">
                               Click the card to download its report
@@ -187,6 +222,36 @@ const Reports = ({ user }) => {
                                   </div>
                                 </div>
                               </div>
+                              <h3 className="mt-8 mb-4 text-left text-xl font-extrabold text-neutral">
+                                Documents by category
+                              </h3>
+                              <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-8 mt-5">
+                                {subcategories.map((subcategory) => (
+                                  <div
+                                    className="stats shadow-md w-full sm:max-w-xs md:max-w-1/3 bg-base-100 text-neutral"
+                                    key={subcategory.subcategory_id}
+                                  >
+                                    <div
+                                      className="stat cursor-pointer"
+                                      onClick={(e) => {
+                                        e && e.preventDefault;
+                                        setSubCategory(
+                                          subcategory.document_subcategory_name
+                                        );
+                                      }}
+                                    >
+                                      <div className="stat-title">
+                                        {subcategory.document_subcategory_name}
+                                      </div>
+                                      <div className="stat-value mt-2 p-4">
+                                        <button className="btn w-full btn-primary btn-outline">
+                                          <BsDownload className="h-6 w-6" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -220,11 +285,11 @@ const Reports = ({ user }) => {
 };
 
 // Prop Types
-Reports.propTypes = {
+DocReports.propTypes = {
   user: PropTypes.shape({
     user_type: PropTypes.string.isRequired,
     // Other user properties
   }).isRequired,
 };
 
-export default Reports;
+export default DocReports;

@@ -10,13 +10,16 @@ import SideMenu from "../side_menu/SideMenu";
 const BackOfficeDashBoard = ({ user }) => {
   const [countDocs, setCountDocs] = useState(0);
   const [error, setError] = useState(true);
+  const [subcategories, setSubcategories] = useState([]);
 
   const backend = useFetchBackendRoute();
 
   const docsCount = `${backend}/docs/count/${user.email}`;
+  const subWithDocsCount = `${backend}/docs/sub-with-docs`;
 
   useEffect(() => {
     fetchDocsCount();
+    fetchSubDocsCount();
   }, [user]);
 
   const fetchDocsCount = async () => {
@@ -24,6 +27,17 @@ const BackOfficeDashBoard = ({ user }) => {
       // console.log(user.email)
       const response = await axios.get(docsCount, { email: user.email });
       setCountDocs(response.data);
+      // console.log(response.data);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
+  const fetchSubDocsCount = async () => {
+    try {
+      // console.log(user.email)
+      const response = await axios.get(subWithDocsCount);
+      setSubcategories(response.data);
       // console.log(response.data);
     } catch (error) {
       setError(error.response.data.message);
@@ -56,7 +70,7 @@ const BackOfficeDashBoard = ({ user }) => {
               </div>
               <div className="mb-5 mt-3">
                 <h3 className="mt-8 mb-4 text-left text-xl font-extrabold text-neutral">
-                  Documents
+                  Documents by user
                 </h3>
                 <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-4 sm:gap-8">
                   <div className="stats shadow-md w-full sm:max-w-xs md:max-w-md md:w-1/2 bg-success text-base-100">
@@ -79,6 +93,26 @@ const BackOfficeDashBoard = ({ user }) => {
                       </div>
                     </div>
                   </div>
+                </div>
+                <h3 className="mt-8 mb-4 text-left text-xl font-extrabold text-neutral">
+                  Documents by category
+                </h3>
+                <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-8 mt-5">
+                  {subcategories.map((subcategory) => (
+                    <div
+                      className="stats shadow-md w-full sm:max-w-xs md:max-w-[calc(50%-1rem)] lg:max-w-[calc(33.33%-2rem)] bg-base-100 text-neutral"
+                      key={subcategory.subcategory_id}
+                    >
+                      <div className="stat">
+                        <div className="stat-title text-neutral">
+                          {subcategory.document_subcategory_name}
+                        </div>
+                        <div className="stat-value">
+                          {subcategory ? subcategory.document_count : 0}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </>

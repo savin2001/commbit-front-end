@@ -233,7 +233,7 @@ const DocUpload = ({ user }) => {
                       htmlFor="doc-upload-modal-2"
                       className="btn btn-outline btn-error"
                       onClick={() => {
-                        setErrorC(null);
+                        setError(null);
                       }}
                     >
                       cancel

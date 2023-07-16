@@ -32,13 +32,12 @@ const DocReports = ({ user }) => {
     fetchSharedDocs();
     fetchSubDocsCount();
     if (subCategory) {
-      const docsBySub = `${backend}/docs/sub/${subCategory}`;
+      const docsBySubRoute = `${backend}/docs/sub/${subCategory}`;
       const fetchDocsBySub = async () => {
         try {
-          console.log(subCategory);
-          const response = await axios.get(docsBySub);
+          const response = await axios.get(docsBySubRoute);
           setDocsBySub(response.data);
-
+          console.log(docsBySub)
           // Call downloadCSV here with the updated docsBySub value
           const title = `Documents in ${subCategory}`;
           downloadCSV(response.data, title);

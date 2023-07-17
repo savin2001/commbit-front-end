@@ -22,9 +22,9 @@ const EventCreation = ({ user }) => {
   const docUploadRoute = `${backend}/events/new`;
 
   const handleCreateEvent = async (e) => {
+    e.preventDefault();
     // eslint-disable-next-line react/prop-types
     const organizer_email = user.email;
-    e.preventDefault();
 
     try {
       const eventData = {
@@ -54,7 +54,7 @@ const EventCreation = ({ user }) => {
     <div className="w-full mx-auto">
       <div className="w-full flex items-center justify-start py-8">
         <label
-          htmlFor="profile-pic-modal"
+          htmlFor="event-list-modal"
           className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer max-w-5xl"
         >
           <label className="block text-lg font-semibold text-neutral">
@@ -62,7 +62,7 @@ const EventCreation = ({ user }) => {
           </label>
           <div className="flex flex-col items-center">
             <span className="inline-block sm:h-1/4 sm:w-1/3 md:h-1/3 md:w-1/6  overflow-hidden bg-secondary hover:shadow-xl">
-              <label htmlFor="profile-pic-modal hover:cursor-pointer"></label>
+              <label htmlFor="event-list-modal"></label>
             </span>
             <label className="mt-5 btn btn-outline btn-primary  animate-bounce">
               <AiOutlinePlus className="mx-auto justify-center h-6 w-6" />
@@ -72,7 +72,7 @@ const EventCreation = ({ user }) => {
         <>
           <input
             type="checkbox"
-            id="profile-pic-modal"
+            id="event-list-modal"
             className="modal-toggle"
           />
           <div className="modal">
@@ -82,7 +82,7 @@ const EventCreation = ({ user }) => {
                   Event details
                 </h3>
               </div>
-              <div className="grid grid-cols-3 gap-8">
+              <div className="mb-3">
                 <div className="col-span-6 md:col-span-3 relative">
                   <label htmlFor="title" className="sr-only">
                     Title
@@ -98,7 +98,7 @@ const EventCreation = ({ user }) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-8">
+              <div className="mb-3">
                 <div className="col-span-6 md:col-span-3 relative">
                   <label htmlFor="description" className="sr-only">
                     Description
@@ -114,7 +114,7 @@ const EventCreation = ({ user }) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-8">
+              <div className="mb-3">
                 <div className="col-span-6 md:col-span-3 relative">
                   <label htmlFor="location" className="sr-only">
                     Location
@@ -130,7 +130,7 @@ const EventCreation = ({ user }) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-8">
+              <div className="mb-3">
                 <div className="col-span-6 md:col-span-3 relative">
                   <label htmlFor="start_date" className="sr-only">
                     Start Date
@@ -146,7 +146,7 @@ const EventCreation = ({ user }) => {
                   />
                 </div>
               </div>
-              <div>
+              <div className="mb-3">
                 <label htmlFor="end_date" className="sr-only">
                   End Date
                 </label>
@@ -159,7 +159,7 @@ const EventCreation = ({ user }) => {
                   className="input input-bordered input-neutral w-full focus:input-primary"
                 />
               </div>
-              <div>
+              <div className="mb-3">
                 <label htmlFor="start_time" className="sr-only">
                   Start Time
                 </label>
@@ -172,7 +172,7 @@ const EventCreation = ({ user }) => {
                   className="input input-bordered input-neutral w-full focus:input-primary"
                 />
               </div>
-              <div>
+              <div className="mb-3">
                 <label htmlFor="end_time" className="sr-only">
                   End Time
                 </label>
@@ -188,7 +188,7 @@ const EventCreation = ({ user }) => {
 
               <div className="modal-action flex justify-between uppercase">
                 <label
-                  htmlFor="profile-pic-modal"
+                  htmlFor="event-list-modal"
                   className="btn btn-outline btn-error"
                   onClick={() => {
                     setError(null);
@@ -202,7 +202,7 @@ const EventCreation = ({ user }) => {
               </div>
               {error && (
                 <div className="mt-12 text-sm uppercase p-4 text-base-100 bg-error text-center">
-                  <label htmlFor="profile-pic-modal" className="mt-2">
+                  <label htmlFor="event-list-modal" className="mt-2">
                     {error}
                   </label>
                 </div>

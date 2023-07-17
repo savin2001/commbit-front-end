@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ const AdminDashBoard = ({ user }) => {
   const backend = useFetchBackendRoute();
 
   const userCount = `${backend}/users/count`;
-  const docsCount = `${backend}/docs/count`;
+  const docsCount = `${backend}/docs/count/${user.email}`;
   const eventsCount = `${backend}/events/count`;
 
   useEffect(() => {

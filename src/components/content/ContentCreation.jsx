@@ -15,6 +15,10 @@ const ContentCreation = ({ user }) => {
   const navigate = useNavigate();
   const docUploadRoute = `${backend}/cms/content/new`;
 
+  const handleEditorChange = (content, editor) => {
+    setContent(content);
+  };
+
   const handleCreateBlog = async (e) => {
     e.preventDefault();
     // eslint-disable-next-line react/prop-types
@@ -93,7 +97,7 @@ const ContentCreation = ({ user }) => {
               <Editor
                 apiKey="ms8ap9rqoj003vp0ifcewfzeeng5eng6wbgmf5banit7ovx8"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onEditorChange={handleEditorChange}
                 required
                 init={{
                   height: 500,

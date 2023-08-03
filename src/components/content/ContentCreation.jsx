@@ -50,7 +50,7 @@ const ContentCreation = ({ user }) => {
           className="w-full flex justify-between items-center px-6 pt-5 pb-6 border-2 border-secondary border-dashed rounded-md cursor-pointer max-w-5xl"
         >
           <label className="block text-lg font-semibold text-neutral">
-            Create new event
+            Create new blog
           </label>
           <div className="flex flex-col items-center">
             <span className="inline-block sm:h-1/4 sm:w-1/3 md:h-1/3 md:w-1/6  overflow-hidden bg-secondary hover:shadow-xl">

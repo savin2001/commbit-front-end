@@ -48,7 +48,7 @@ const ContentMgrDashBoard = ({ user }) => {
                       </div>
                     </div>
                   </Link>
-                  <Link
+                  {/* <Link
                     to={`/${user.user_type}/documents`}
                     className="stats shadow-md w-full sm:max-w-xs md:w-1/2 text-base-100"
                   >
@@ -56,7 +56,7 @@ const ContentMgrDashBoard = ({ user }) => {
                       <div className="stat-title">Total Media</div>
                       <div className="stat-value text-neutral">0</div>
                     </div>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </>

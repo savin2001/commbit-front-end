@@ -54,7 +54,7 @@ const Documents = ({ user }) => {
   const fetchSharedDocs = async () => {
     try {
       const response = await axios.get(docsSharedList, { email: user.email });
-      // console.log("Shared docs", response.data);
+      console.log("Shared docs", response.data);
       setDocsShared(response.data);
     } catch (error) {
       setError(error.response.data.message);
@@ -67,6 +67,7 @@ const Documents = ({ user }) => {
       return setError("Kindly choose a file to download");
     }
     console.log(fileName, fileURL);
+
     getDownloadURL(ref(store, fileURL))
       .then((url) => {
         // `url` is the download URL for the file

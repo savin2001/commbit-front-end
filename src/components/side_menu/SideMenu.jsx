@@ -30,9 +30,9 @@ const SideMenu = () => {
               <li>
                 <Link className="lg:mb-3" to={`/${user.user_type}/blogs`}>blogs</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link className="lg:mb-3" to={`/${user.user_type}/media`}>media</Link>
-              </li>
+              </li> */}
             </>
           )}
           {user.user_type === userRole[2] && (

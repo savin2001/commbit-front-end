@@ -277,7 +277,7 @@ const DocUpload = ({ user }) => {
 
                   {progress === 100 && (
                     <div className="modal-action  uppercase">
-                      <Link to={`/${user.uid}/dashboard`}>
+                      <Link to={`/${user.user_type}/dashboard`}>
                         <label
                           htmlFor="doc-upload-modal"
                           className="btn btn-outline btn-error"

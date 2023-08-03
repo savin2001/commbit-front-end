@@ -29,7 +29,7 @@ const EventMgrDashBoard = ({ user }) => {
 
   return (
     <div className="mb-8 w-full">
-      {/* Summary of users and events */}
+      {/* Summary of events */}
 
       {/* Events */}
       {countEvents && (

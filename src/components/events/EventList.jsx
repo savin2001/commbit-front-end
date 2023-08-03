@@ -91,6 +91,7 @@ const EventList = ({ user }) => {
       try {
         const response = await axios.put(eventCancel);
         // setEvent(response.data);
+        
         console.log(response.data);
       } catch (error) {
         setError(error.response.data.message);
@@ -124,7 +125,7 @@ const EventList = ({ user }) => {
                                 <th>Id</th>
                                 <th>Event</th>
                                 <th>Location</th>
-                                <th></th>
+                                <th>Details</th>
                               </tr>
                             </thead>
 
@@ -158,7 +159,7 @@ const EventList = ({ user }) => {
                                           </label>
                                         </td>
                                       ) : (
-                                        <td>FInished</td>
+                                        <td>Finished</td>
                                       )}
                                     </tr>
                                   ))}

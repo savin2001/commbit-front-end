@@ -99,7 +99,7 @@ export default function App() {
 
               <Route
                 exact
-                path={`/:uid/profile`}
+                path={`/${userType}/profile`}
                 element={
                   <PrivateRoute>
                     <Profile />
@@ -109,7 +109,7 @@ export default function App() {
 
               <Route
                 exact
-                path={`/:uid/dashboard`}
+                path={`/${userType}/dashboard`}
                 element={
                   <PrivateRoute>
                     <DashBoard user={userDet} />
@@ -120,7 +120,7 @@ export default function App() {
               {/* Admin pages */}
               <Route
                 exact
-                path={`/:uid/users`}
+                path={`/${userType}/users`}
                 element={
                   <PrivateRoute>
                     <Users user={userDet} />
@@ -131,7 +131,7 @@ export default function App() {
               {/* Content management pages */}
               <Route
                 exact
-                path={`/:uid/media`}
+                path={`/${userType}/media`}
                 element={
                   <PrivateRoute>
                     <Media user={userDet} />
@@ -140,7 +140,7 @@ export default function App() {
               />
               <Route
                 exact
-                path={`/:uid/blogs`}
+                path={`/${userType}/blogs`}
                 element={
                   <PrivateRoute>
                     <Blogs user={userDet} />
@@ -151,7 +151,7 @@ export default function App() {
               {/* Event management pages */}
               <Route
                 exact
-                path={`/:uid/events`}
+                path={`/${userType}/events`}
                 element={
                   <PrivateRoute>
                     <Events user={userDet} />
@@ -161,7 +161,7 @@ export default function App() {
 
               <Route
                 exact
-                path={`/:uid/participants`}
+                path={`/${userType}/participants`}
                 element={
                   <PrivateRoute>
                     <Participants user={userDet} />
@@ -172,7 +172,7 @@ export default function App() {
               {/* Back office pages */}
               <Route
                 exact
-                path={`/:uid/documents`}
+                path={`/${userType}/documents`}
                 element={
                   <PrivateRoute>
                     <Documents user={userDet} />
@@ -182,7 +182,7 @@ export default function App() {
 
               <Route
                 exact
-                path={`/:uid/reports`}
+                path={`/${userType}/reports`}
                 element={
                   <PrivateRoute>
                     <Reports user={userDet} />
@@ -191,7 +191,7 @@ export default function App() {
               />
               <Route
                 exact
-                path={`/:uid/doc-reports`}
+                path={`/${userType}/doc-reports`}
                 element={
                   <PrivateRoute>
                     <DocReport user={userDet} />
